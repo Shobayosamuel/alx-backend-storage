@@ -1,3 +1,6 @@
+-- sql script that creates a stored procedure to add correction for a student
+-- It taks three inputs, user_id, project_name, and score
+
 DELIMITER $$
 
 CREATE PROCEDURE AddBonus (IN user_id INT, IN project_name CHAR(255), IN score INT)
