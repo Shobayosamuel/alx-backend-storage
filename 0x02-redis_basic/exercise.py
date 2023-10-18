@@ -39,3 +39,4 @@ class Cache:
         """Parametize Cache.get to an int"""
         val = self.get(key)
         return val.decode('utf-8') if isinstance(val, bytes)
+
