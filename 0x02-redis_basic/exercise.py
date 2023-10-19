@@ -21,22 +21,20 @@ class Cache:
         return key
 
     def get(self, key: str,
-            fn: Callable[None]) -> Union[str, bytes, int, float]:
+            fn: Callable[[bytes], Union[int, float, str, bytes]] = None):
         """Read from redis and recover the data type"""
         data = self._redis.get(key)
-        if fn(data) is not None:
-            ans = fn(data)
-        else:
-            ans = data
-        return data
+        if data is not None:
+            if fn is not None:
+                return fn(data)
+            else:
+                return data
+        return None
 
     def get_str(self, key: str) -> str:
         """Parametize Cache.get to a str"""
-        val = self.get(key)
-        return val.decode('utf-8') if isinstance(val, bytes)
+        return self.get(key, fn=lambda d: d.decode("utf-8"))
 
     def get_int(self, key: str) -> int:
         """Parametize Cache.get to an int"""
-        val = self.get(key)
-        return val.decode('utf-8') if isinstance(val, bytes)
-
+        return self.get(key, fn=lambda d: int(d))
